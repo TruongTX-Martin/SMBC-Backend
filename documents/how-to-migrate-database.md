@@ -117,3 +117,8 @@ poetry run python manage.py db upgrade
 poetry run python manage.py generate_erd
 ```
 
+## Common issues
+
+- [Resolving Database Schema Conflicts](https://blog.miguelgrinberg.com/post/resolving-database-schema-conflicts)
+- [Work on multiple Git branches](https://stackoverflow.com/questions/55715129/work-on-multiple-branches-with-flask-migrate)
+
