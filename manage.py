@@ -1,3 +1,5 @@
+import codecs
+import sadisplay
 from datetime import datetime
 import urllib.parse
 
@@ -9,6 +11,7 @@ import pytest
 from app.bootstrap import create_app
 from app.config import Config
 from app.database import db
+from app import models
 
 app = create_app()
 migrate = Migrate(app, db)
@@ -60,35 +63,12 @@ def seed():
 
 
 @manager.command
-def cluster_poll_user():
-    """Run analysis service to cluster users of poll"""
-
-    start_time = datetime.now()
-    print('Started executing grouping user start_time = %s.' % start_time)
-
-    from app.repositories import PollRepository, PollUserGroupRepository, StatementPollUserGroupRepository,\
-        UserPollRepository, StatementRepository, VoteRepository
-    from app.services import AnalysisService
-    poll_user_group_repository = PollUserGroupRepository(database=db)
-    statement_poll_user_group_repository = StatementPollUserGroupRepository(
-        database=db)
-    statement_repository = StatementRepository(database=db)
-    vote_repository = VoteRepository(database=db)
-    poll_repository = PollRepository(database=db)
-    user_poll_repository = UserPollRepository(database=db)
-    analysis_service = AnalysisService(
-        statement_repository=statement_repository,
-        vote_repository=vote_repository,
-        poll_user_group_repository=poll_user_group_repository,
-        statement_poll_user_group_repository=
-        statement_poll_user_group_repository,
-        user_poll_repository=user_poll_repository,
-        poll_repository=poll_repository)
-
-    analysis_service.execute_grouping()
-
-    duration = datetime.now() - start_time
-    print("--- duration = %s seconds ---" % duration.seconds)
+def generate_erd():
+    desc = sadisplay.describe([getattr(models, attr) for attr in dir(models)])
+    with codecs.open('documents/db/schema.plantuml', 'w', encoding='utf-8') as f:
+        f.write(sadisplay.plantuml(desc))
+    with codecs.open('documents/db/schema.dot', 'w', encoding='utf-8') as f:
+        f.write(sadisplay.dot(desc))
 
 
 if __name__ == '__main__':

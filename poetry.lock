@@ -553,6 +553,17 @@ botocore = ">=1.12.36,<2.0a.0"
 
 [[package]]
 category = "main"
+description = "SqlAlchemy schema display script"
+name = "sadisplay"
+optional = false
+python-versions = "*"
+version = "0.4.9"
+
+[package.dependencies]
+SQLAlchemy = ">=0.5"
+
+[[package]]
+category = "main"
 description = "Python 2 and 3 compatibility utilities"
 name = "six"
 optional = false
@@ -660,7 +671,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "b630297d31e430c707eba84f105d36d47850daccafb48b840f8524a1c02fd751"
+content-hash = "766ba4affd307084b91c37dd2114758659be0fac1abda26d0b9f6193a81af668"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -896,6 +907,10 @@ python-editor = [
 s3transfer = [
     {file = "s3transfer-0.3.3-py2.py3-none-any.whl", hash = "sha256:2482b4259524933a022d59da830f51bd746db62f047d6eb213f2f8855dcb8a13"},
     {file = "s3transfer-0.3.3.tar.gz", hash = "sha256:921a37e2aefc64145e7b73d50c71bb4f26f46e4c9f414dc648c6245ff92cf7db"},
+]
+sadisplay = [
+    {file = "sadisplay-0.4.9-py2.py3-none-any.whl", hash = "sha256:bf456f582b8f5da19fedef7a9afe969b49231d79724710bc7d35c9439f44c2fc"},
+    {file = "sadisplay-0.4.9.tar.gz", hash = "sha256:af67160f89123886ab42b247262862bfcde0a3c236229ecdd59de0a1e8e35d96"},
 ]
 six = [
     {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
