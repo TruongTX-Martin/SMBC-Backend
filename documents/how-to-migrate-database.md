@@ -48,7 +48,7 @@ After you run the database initialization you will see a new folder called “mi
 
 To sets the revision in the database to head
 ```bash
-poetry run python manage.py db stamp head
+poetry run python manage.py database stamp head
 
 ```
 
@@ -100,13 +100,13 @@ Let’s create our first migration by running the migrate command.
 Generate the migration file.
 
 ```bash
-poetry run python manage.py db migrate -m 'create users table'
+poetry run python manage.py database migrate -m 'create users table'
 ```
 
 Update database
 
 ```bash
-poetry run python manage.py db upgrade
+poetry run python manage.py database upgrade
 
 ```
 
