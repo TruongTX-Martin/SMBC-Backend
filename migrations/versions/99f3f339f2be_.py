@@ -7,6 +7,8 @@ Create Date: 2020-05-06 06:21:32.703626
 """
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import func
+from datetime import datetime
 
 
 # revision identifiers, used by Alembic.
@@ -24,16 +26,18 @@ def upgrade():
     sa.Column('url', sa.String(length=255), nullable=False),
     sa.Column('media_type', sa.String(length=255), nullable=True),
     sa.Column('storage_type', sa.String(length=255), nullable=True),
-    sa.Column('created_at', sa.TIMESTAMP(), nullable=False),
-    sa.Column('updated_at', sa.TIMESTAMP(), nullable=False),
+    sa.Column('created_at', sa.TIMESTAMP(), server_default=func.current_timestamp(), nullable=False),
+    sa.Column('updated_at', sa.TIMESTAMP(), server_default=func.current_timestamp(),
+              server_onupdate=func.current_timestamp(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_roles',
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('user_id', sa.BigInteger(), nullable=False),
     sa.Column('role', sa.String(length=255), nullable=False),
-    sa.Column('created_at', sa.TIMESTAMP(), nullable=False),
-    sa.Column('updated_at', sa.TIMESTAMP(), nullable=False),
+    sa.Column('created_at', sa.TIMESTAMP(), server_default=func.current_timestamp(), nullable=False),
+    sa.Column('updated_at', sa.TIMESTAMP(), server_default=func.current_timestamp(),
+              server_onupdate=func.current_timestamp(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('users',
@@ -41,8 +45,9 @@ def upgrade():
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('password', sa.String(length=255), nullable=False),
     sa.Column('anonymous_id', sa.String(length=255), nullable=True),
-    sa.Column('created_at', sa.TIMESTAMP(), nullable=False),
-    sa.Column('updated_at', sa.TIMESTAMP(), nullable=False),
+    sa.Column('created_at', sa.TIMESTAMP(), server_default=func.current_timestamp(), nullable=False),
+    sa.Column('updated_at', sa.TIMESTAMP(),server_default=func.current_timestamp(),
+              server_onupdate=func.current_timestamp(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
