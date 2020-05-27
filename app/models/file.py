@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from ..database import db
 
@@ -23,12 +23,12 @@ class File(db.Model):
     storage_type = db.Column('storage_type', db.String(255), nullable=True)
     created_at = db.Column('created_at',
                            db.TIMESTAMP,
-                           default=datetime.datetime.utcnow,
+                           default=datetime.utcnow,
                            nullable=False)
     updated_at = db.Column('updated_at',
                            db.TIMESTAMP,
-                           onupdate=datetime.datetime.utcnow,
-                           default=datetime.datetime.utcnow,
+                           onupdate=datetime.utcnow,
+                           default=datetime.utcnow,
                            nullable=False)
 
     def __repr__(self):
