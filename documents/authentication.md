@@ -11,3 +11,6 @@ When use login, system use pyjwt to generate a token by exp (expired time),
 user id, and SECRET_KEY with HS256 
 
 When use send token in header, system decode and get the user id
+
+Frontend:
+- Add header: `Authorization Bearer TokenKey`
