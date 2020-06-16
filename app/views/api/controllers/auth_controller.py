@@ -5,12 +5,17 @@ from app.services import UserService
 from app.views.api.schemas import LoginInputSchema
 
 from ..responses import Error, Token
+from ....middlewares.request_validate import *
 
 app = Blueprint('api.auth', __name__)
 
 
 @app.route("/signin", methods=["POST"])
 @inject
+@request_validate(
+    Param('email', 'JSON', str, rules=[Email()]),
+    Param('password', 'JSON', str, rules=[MinLength(6)])
+)
 def signin(user_service: UserService):
     request_data = request.get_json()
     LoginInputSchema().load(request_data)
