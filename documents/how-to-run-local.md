@@ -46,7 +46,7 @@ poetry run python manage.py run
 ### 1. Update models files
 Please update your model files by adding new fields or add new model
 
-Please read detail in [how-to-migrate-database.md](./documents/how-to-migrate-database.md)
+Please read detail in [how-to-migrate-database.md](./how-to-migrate-database.md)
 
 
 ### 2. Update database
@@ -73,6 +73,7 @@ poetry run yapf -ir -vv .
 
 ## Run unittest
 
+For unittest implement please see [unittest.md](./unittest.md) 
 ```
 poetry run python manage.py test
 ```
@@ -81,7 +82,7 @@ poetry run python manage.py test
 
 We are using PlantUML to manage ERD. Please install plantUML extension to your IDE to view the file.
 
-ERD: [/documents/db/schema.plantuml](./documents/db/schema.plantuml)
+ERD: [/documents/db/schema.plantuml](./db/schema.plantuml)
 
 Auto generate ERD
 ```
@@ -110,7 +111,7 @@ docker-compose up
 
 #### How to execute a poetry command in side docker-compose container
 
-For example with `poetry run python manage.py database upgrade` command you can run through `docker-compose exec`
+For example with `poetry run python manage.py database upgrade` command you can run via `docker-compose exec`
 
 ```bash
 docker-compose exec app poetry run python manage.py database upgrade
