@@ -24,8 +24,16 @@ pip3 install poetry
 - Install dependency
 
 ```
+cd flask-app-base
 poetry install
 ```
+
+- Update environment variables
+
+```
+cp .env.example .env
+```
+Please update the database information with DB_ environment variables in .env file
 
 - Run http server
 
@@ -86,6 +94,14 @@ We have 2 container for local development. Please check detail configuration in 
 
 - db: Mysql database with initiate database process in `docker/init.sql`
 - app: flask-app-base application
+
+Update environment variables
+
+```
+cp .env.example .env
+```
+
+Please update the database information with DB_ environment variables in .env file. For DB host please using docker-compose service name instead of `localhost` as default.
 
 ```
 cd flask-app-base
