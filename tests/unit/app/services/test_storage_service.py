@@ -6,10 +6,11 @@ from app.services import StorageService
 from app.services.storage import Local, S3, BaseStorage
 
 from ...mocks.repositories import MockStorageRepository
+import unittest
 
 
 
-class TestStorageService:
+class TestStorageService(unittest.TestCase):
     def setup_method(self, _method):
         pass
 
