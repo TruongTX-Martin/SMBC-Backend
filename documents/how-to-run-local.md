@@ -24,8 +24,16 @@ pip3 install poetry
 - Install dependency
 
 ```
+cd flask-app-base
 poetry install
 ```
+
+- Update environment variables
+
+```
+cp .env.example .env
+```
+Please update the database information with DB_ environment variables in .env file
 
 - Run http server
 
@@ -38,7 +46,7 @@ poetry run python manage.py run
 ### 1. Update models files
 Please update your model files by adding new fields or add new model
 
-Please read detail in [how-to-migrate-database.md](./documents/how-to-migrate-database.md)
+Please read detail in [how-to-migrate-database.md](./how-to-migrate-database.md)
 
 
 ### 2. Update database
@@ -65,6 +73,7 @@ poetry run yapf -ir -vv .
 
 ## Run unittest
 
+For unittest implement please see [unittest.md](./unittest.md) 
 ```
 poetry run python manage.py test
 ```
@@ -73,7 +82,7 @@ poetry run python manage.py test
 
 We are using PlantUML to manage ERD. Please install plantUML extension to your IDE to view the file.
 
-ERD: [/documents/db/schema.plantuml](./documents/db/schema.plantuml)
+ERD: [/documents/db/schema.plantuml](./db/schema.plantuml)
 
 Auto generate ERD
 ```
@@ -87,6 +96,14 @@ We have 2 container for local development. Please check detail configuration in 
 - db: Mysql database with initiate database process in `docker/init.sql`
 - app: flask-app-base application
 
+Update environment variables
+
+```
+cp .env.example .env
+```
+
+Please update the database information with DB_ environment variables in .env file. For DB host please using docker-compose service name instead of `localhost` as default.
+
 ```
 cd flask-app-base
 docker-compose up
@@ -94,7 +111,7 @@ docker-compose up
 
 #### How to execute a poetry command in side docker-compose container
 
-For example with `poetry run python manage.py database upgrade` command you can run through `docker-compose exec`
+For example with `poetry run python manage.py database upgrade` command you can run via `docker-compose exec`
 
 ```bash
 docker-compose exec app poetry run python manage.py database upgrade
