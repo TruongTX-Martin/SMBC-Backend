@@ -16,14 +16,72 @@ Check http://simeonfranklin.com/blog/2012/jul/1/python-decorators-in-12-steps/
 to see detail about decorator
 
 
-## Use
+## Login
+```python
+@app.route("/signin", methods=["POST"])
+@inject
+def signin(user_service: UserService):
+    request_data = request.get_json()
+    LoginInputSchema().load(request_data)
+    input_data = {
+        'email': request_data['email'],
+        'password': request_data['password']
+    }
+
+    user = user_service.login(**input_data)
+    return Token(user).response()
+```
+
+### Workflow:
+->signin get data email and password from request
+```python
+request_data = request.get_json()
+    LoginInputSchema().load(request_data)
+    input_data = {
+        'email': request_data['email'],
+        'password': request_data['password']
+    }
+```
+-> call user service login `user = user_service.login(**input_data)`
+
+-> Service login check user name and password is correct or not
+```python
+user = self.user_repository.get_user_by_email(email)
+if user is None:
+    raise APIResponseError('Incorrect username.')
+elif not user.check_password(password):
+    raise APIResponseError('Incorrect password.')
+
+session.clear()
+session['user_id'] = user.id
+```
+The session helpful when in case weblogin, not API
+
+->Return Token `return Token(user).response()`
+ 
+In Token response class, model `User encoded using decorate` and return token field like this
+```json
+{"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZXhwIjoxNTkyNTU2MTI1fQ.qHNUlV-UawMFqxt_jRHRsD6dgDyXhwhnHHelYDSa4r4"}
+```
+
+
+## Use Token
 
 - Add `@token_required` before each function required login
 ```python
-@app.route("/add_tweet")
-@login_required
-def add_tweet():
+@app.route('', methods=["GET"])
+@inject
+@token_required
+def me():
+    user = g.user
+    return User(model=user).response(), 200
 ```
+
+### Workflow
+ -> After add `@token_required`, each request to server, the function `decorator` will be run
+ Check header, get user and set global variable `g.user  = user`
+ `user = g.user` in controller get the current user and return User response
+
 
 ## How it work?
 
