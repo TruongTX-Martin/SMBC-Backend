@@ -1,9 +1,9 @@
 from flask import Blueprint, redirect, request
-from flask_login import current_user
+from flask import Blueprint, current_app, g, request
 from injector import inject
 
 from ....exceptions import LogicError, NotFoundError, ParameterError
-from ....middlewares.login_as_anonymous import login_as_anonymous
+from ....middlewares.authenticate import token_required
 from ..responses import Error, User
 
 app = Blueprint('api.me', __name__)
@@ -11,7 +11,7 @@ app = Blueprint('api.me', __name__)
 
 @app.route('', methods=["GET"])
 @inject
-@login_as_anonymous
+@token_required
 def me():
-    user = current_user
+    user = g.user
     return User(model=user).response(), 200
