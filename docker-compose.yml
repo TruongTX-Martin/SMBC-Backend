@@ -27,6 +27,19 @@ services:
       - "5000:5000"
     links:
       - db
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./:/var/www/app
+    working_dir: /var/www/app
+    depends_on:
+      - app
+    links:
+      - app
+    ports:
+      - 80:80
 
 volumes:
   mysql-data:
