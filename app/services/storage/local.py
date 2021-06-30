@@ -15,6 +15,9 @@ class Local(BaseStorage):
                file_name: str = "",
                content_type: str = None) -> Optional[str]:
 
+        if not os.path.isdir(Config.STORAGE_LOCAL_DIRECTORY):
+            os.makedirs(Config.STORAGE_LOCAL_DIRECTORY)
+
         shutil.copyfile(
             file_path, os.path.join(Config.STORAGE_LOCAL_DIRECTORY, file_name))
         return request.url_root + "static/uploads/" + file_name

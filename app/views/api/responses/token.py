@@ -7,5 +7,4 @@ class Token(BaseEntity):
             "id": self._model.id,
             "email": self._model.email,
             "token": self._model.token,
-            "anonymousId": self._model.anonymous_id
         }

@@ -15,3 +15,4 @@ app = Blueprint('api.me', __name__)
 def me():
     user = g.user
     return User(model=user).response(), 200
+
