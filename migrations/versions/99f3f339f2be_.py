@@ -44,7 +44,6 @@ def upgrade():
     sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('email', sa.String(length=255), nullable=False),
     sa.Column('password', sa.String(length=255), nullable=False),
-    sa.Column('anonymous_id', sa.String(length=255), nullable=True),
     sa.Column('created_at', sa.TIMESTAMP(), server_default=func.current_timestamp(), nullable=False),
     sa.Column('updated_at', sa.TIMESTAMP(),server_default=func.current_timestamp(),
               server_onupdate=func.current_timestamp(), nullable=False),

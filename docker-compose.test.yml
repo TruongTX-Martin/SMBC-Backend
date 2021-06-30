@@ -9,7 +9,7 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./docker/db/init-test.sql:/docker-entrypoint-initdb.d/:ro
+      - ./docker/:/docker-entrypoint-initdb.d/:ro
   app:
     build:
       context: .
@@ -20,26 +20,13 @@ services:
       - ./:/var/www/app
     working_dir: /var/www/app
     env_file:
-      - ./.env
+      - ./.env.test
     depends_on:
       - db
     ports:
       - "5000:5000"
     links:
       - db
-  nginx:
-    build:
-      context: ./docker/nginx
-      dockerfile: ./Dockerfile
-    volumes:
-      - ./:/var/www/app
-    working_dir: /var/www/app
-    depends_on:
-      - app
-    links:
-      - app
-    ports:
-      - 80:80
 
 volumes:
   mysql-data:

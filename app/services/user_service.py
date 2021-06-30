@@ -45,29 +45,13 @@ class UserService(object):
 
         return user
 
-    def create_anonymous_new_user(self) -> Optional[User]:
-        user_fields = {
-            'email': "",
-            'password': "",
-            'anonymous_id': ulid.new().str
-        }
-        user = self.user_repository.create(user_fields)
-        return user
-
-    def login_as_anonymous(self, anonymous_id: str) -> Optional[User]:
-        user = self.user_repository.find_by_anonymous_id(anonymous_id)
-        if user is None:
-            raise APIResponseError('Incorrect User')
-
-        return user
-
     def login(self, email: str, password: str) -> Optional[User]:
 
         user = self.user_repository.get_user_by_email(email)
         if user is None:
-            raise APIResponseError('Incorrect username.')
+            raise APIResponseError('Incorrect username or password')
         elif not user.check_password(password):
-            raise APIResponseError('Incorrect password.')
+            raise APIResponseError('Incorrect username or password')
 
         session.clear()
         session['user_id'] = user.id

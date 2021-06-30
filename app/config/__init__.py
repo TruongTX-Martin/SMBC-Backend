@@ -11,6 +11,7 @@ load_dotenv(dotenv_path)
 
 class Config:
     NAME = os.getenv('NAME', 'Flask Sample')
+    FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     SECRET_KEY = os.getenv('SECRET_KEY', '')
     DEBUG = False
     APP_HOST = os.getenv('APP_HOST', '127.0.0.1')
@@ -45,4 +46,9 @@ class Config:
     SESSION_FILE_DIR = os.getenv('SESSION_FILE_DIR')
     SESSION_FILE_THRESHOLD = int(os.getenv('SESSION_FILE_THRESHOLD'))
     TOKEN_EXPIRED_IN_DAYS = int(os.getenv('TOKEN_EXPIRED_IN_DAYS', 1))
+
+    SLACK_ENABLED = bool(os.getenv('SLACK_ENABLED', False))
+    SLACK_WEBHOOK_USER = os.getenv('SLACK_WEBHOOK_USER', 'flask-bot')
+    SLACK_WEBHOOK_URL = os.getenv('SLACK_WEBHOOK_URL', '')
+    SLACK_CHANNEL_NAME = os.getenv('SLACK_CHANNEL_NAME', '')
 

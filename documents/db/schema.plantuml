@@ -13,14 +13,13 @@ Class File {
 }
 
 Class User {
-    BIGINT           ★ id          
-    VARCHAR[255]     ⚪ anonymous_id
-    TIMESTAMP        ⚪ created_at  
-    VARCHAR[255]     ⚪ email       
-    VARCHAR[255]     ⚪ password    
-    TIMESTAMP        ⚪ updated_at  
-    check_password()               
-    get_id()                       
+    BIGINT           ★ id        
+    TIMESTAMP        ⚪ created_at
+    VARCHAR[255]     ⚪ email     
+    VARCHAR[255]     ⚪ password  
+    TIMESTAMP        ⚪ updated_at
+    check_password()             
+    get_id()                     
 }
 
 Class UserRole {
