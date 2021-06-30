@@ -9,7 +9,6 @@ from ...mocks.repositories import MockStorageRepository
 import unittest
 
 
-
 class TestStorageService(unittest.TestCase):
     def setup_method(self, _method):
         pass
@@ -26,7 +25,6 @@ class TestStorageService(unittest.TestCase):
         file = FileStorage(fileTmp)
         fileObject = service.upload(file)
         assert fileObject.url is not None
-
 
     @staticmethod
     def _get_service():

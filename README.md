@@ -67,7 +67,7 @@ poetry run python manage.py database upgrade
 poetry run python manage.py database migrate
 ```
 
-### Code format
+### 4. Code format
 
 Please execute isort and yapf before committing
 
@@ -76,4 +76,19 @@ Please execute isort and yapf before committing
 poetry run isort -rc -y .
 
 poetry run yapf -ir -vv .
+```
+
+
+### 5. Run unittest
+
+Start test Docker environment
+
+```.env
+make test
+
+```
+
+Run test case
+```.env
+dkc exec app poetry run python manage.py test -p tests
 ```
