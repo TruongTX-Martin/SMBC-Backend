@@ -1,11 +1,11 @@
 from datetime import datetime
 
-import factory
 from faker import Faker
 from faker.providers import internet
 
 from app.database import db
 from app.models import User
+import factory
 
 fake = Faker()
 fake.add_provider(internet)

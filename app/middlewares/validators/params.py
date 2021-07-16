@@ -1,16 +1,17 @@
-from .exceptions import (
-    NotAllowedType,
-    UndefinedParamType,
-    InvalidRequest
-)
+from .exceptions import InvalidRequest, NotAllowedType, UndefinedParamType
 
 PARAM_TYPES = ('GET', 'PATH', 'JSON', 'FORM')
 ALLOWED_TYPES = (str, bool, int, float, dict, list)
 
-class Param(object):
 
-    def __init__(self, name, param_type, value_type=None,
-                 required=True, default=None, rules=None):
+class Param(object):
+    def __init__(self,
+                 name,
+                 param_type,
+                 value_type=None,
+                 required=True,
+                 default=None,
+                 rules=None):
         """
         :param mixed default:
         :param bool required:
@@ -51,7 +52,8 @@ class Param(object):
                 value = [item.strip() for item in value.split(',')]
             elif self.value_type == dict:
                 value = {
-                    item.split(':')[0].strip(): item.partition(':')[-1].strip()
+                    item.split(':')[0].strip():
+                    item.partition(':')[-1].strip()
                     for item in value.split(',')
                 }
 

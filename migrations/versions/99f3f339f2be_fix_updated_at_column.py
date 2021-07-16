@@ -1,15 +1,18 @@
-"""init database
+"""empty message
 
-Revision ID: 2cfe15e0a579
+Revision ID: 99f3f339f2be
 Revises: 
-Create Date: 2021-07-16 05:05:01.078412
+Create Date: 2020-05-06 06:21:32.703626
 
 """
+from datetime import datetime
+
 from alembic import op
 import sqlalchemy as sa
+from sqlalchemy import func
 
 # revision identifiers, used by Alembic.
-revision = '2cfe15e0a579'
+revision = '99f3f339f2be'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -25,11 +28,12 @@ def upgrade():
         sa.Column('storage_type', sa.String(length=255), nullable=True),
         sa.Column('created_at',
                   sa.TIMESTAMP(),
-                  server_default=sa.text('CURRENT_TIMESTAMP'),
+                  server_default=func.current_timestamp(),
                   nullable=False),
         sa.Column('updated_at',
                   sa.TIMESTAMP(),
-                  server_default=sa.text('CURRENT_TIMESTAMP'),
+                  server_default=func.current_timestamp(),
+                  server_onupdate=func.current_timestamp(),
                   nullable=False), sa.PrimaryKeyConstraint('id'))
     op.create_table(
         'user_roles', sa.Column('id', sa.BigInteger(), nullable=False),
@@ -37,11 +41,12 @@ def upgrade():
         sa.Column('role', sa.String(length=255), nullable=False),
         sa.Column('created_at',
                   sa.TIMESTAMP(),
-                  server_default=sa.text('CURRENT_TIMESTAMP'),
+                  server_default=func.current_timestamp(),
                   nullable=False),
         sa.Column('updated_at',
                   sa.TIMESTAMP(),
-                  server_default=sa.text('CURRENT_TIMESTAMP'),
+                  server_default=func.current_timestamp(),
+                  server_onupdate=func.current_timestamp(),
                   nullable=False), sa.PrimaryKeyConstraint('id'))
     op.create_table(
         'users', sa.Column('id', sa.BigInteger(), nullable=False),
@@ -49,11 +54,12 @@ def upgrade():
         sa.Column('password', sa.String(length=255), nullable=False),
         sa.Column('created_at',
                   sa.TIMESTAMP(),
-                  server_default=sa.text('CURRENT_TIMESTAMP'),
+                  server_default=func.current_timestamp(),
                   nullable=False),
         sa.Column('updated_at',
                   sa.TIMESTAMP(),
-                  server_default=sa.text('CURRENT_TIMESTAMP'),
+                  server_default=func.current_timestamp(),
+                  server_onupdate=func.current_timestamp(),
                   nullable=False), sa.PrimaryKeyConstraint('id'))
     # ### end Alembic commands ###
 

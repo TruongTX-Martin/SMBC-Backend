@@ -1,6 +1,6 @@
 from flask import Blueprint, Flask, redirect, request
 
-from .controllers import me_controller, auth_controller
+from .controllers import auth_controller, me_controller
 
 
 def build_routes(app: Flask) -> None:

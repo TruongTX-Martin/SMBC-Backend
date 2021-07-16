@@ -1,7 +1,6 @@
 import codecs
-import sadisplay
-import sys
 import logging
+import sys
 import urllib.parse
 
 from flask import jsonify, url_for
@@ -9,11 +8,12 @@ from flask._compat import text_type
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
 import pytest
+import sadisplay
 
+from app import models
 from app.bootstrap import create_app
 from app.config import Config
 from app.database import db
-from app import models
 
 
 class TextColor:
@@ -79,7 +79,7 @@ manager.add_command('database', MigrateCommand)
 
 @manager.command
 def run():
-    app.run(host=Config.APP_HOST, port=Config.APP_PORT) #5000
+    app.run(host=Config.APP_HOST, port=Config.APP_PORT)  #5000
 
 
 @manager.command
@@ -123,7 +123,8 @@ def seed():
 @manager.command
 def generate_erd():
     desc = sadisplay.describe([getattr(models, attr) for attr in dir(models)])
-    with codecs.open('documents/db/schema.plantuml', 'w', encoding='utf-8') as f:
+    with codecs.open('documents/db/schema.plantuml', 'w',
+                     encoding='utf-8') as f:
         f.write(sadisplay.plantuml(desc))
     with codecs.open('documents/db/schema.dot', 'w', encoding='utf-8') as f:
         f.write(sadisplay.dot(desc))
