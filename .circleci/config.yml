@@ -69,19 +69,6 @@ jobs:
           command: |
             poetry run pytest
 
-  deploy-dev:
-    executor: aws-cli/default
-
-    steps:
-      - aws-cli/setup:
-          profile-name: default
-
-      - run:
-          name: Execute deplopy to server
-          command: |
-            aws ssm send-command --instance-ids "${INSTANCE_ID_DEV}" --document-name "AWS-RunShellScript" --comment "Demo run shell script on Linux Instance" --parameters commands="${DEPLOY_CMD}" --output text --query "Command.CommandId"
-
-
 # In the workflows section, we specify when we want to run the jobs defined
 workflows:
   version: 2
@@ -90,10 +77,3 @@ workflows:
   build-and-test-workflow:
     jobs:
       - build-and-test
-
-  deploy_dev:
-    jobs:
-      - deploy-dev:
-          filters:
-            branches:
-              only: /^master/
