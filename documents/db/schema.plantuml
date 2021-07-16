@@ -2,6 +2,14 @@
 
 skinparam defaultFontName Courier
 
+Class EmailToken {
+    BIGINT       ★ id        
+    TIMESTAMP    ⚪ created_at
+    VARCHAR[255] ⚪ email     
+    VARCHAR[255] ⚪ token     
+    TIMESTAMP    ⚪ updated_at
+}
+
 Class File {
     BIGINT       ★ id                
     TIMESTAMP    ⚪ created_at        
