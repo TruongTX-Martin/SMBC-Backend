@@ -12,11 +12,12 @@ load_dotenv(dotenv_path)
 class Config:
     FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     NAME = os.getenv('NAME', 'Flask Sample')
-    FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     SECRET_KEY = os.getenv('SECRET_KEY', '')
     DEBUG = False
     APP_HOST = os.getenv('APP_HOST', '127.0.0.1')
     APP_PORT = os.getenv('APP_PORT', '5000')
+    APP_URL = os.getenv('APP_URL', 'http://localhost')
+
     SQLALCHEMY_DATABASE_URI = 'mysql://{user}:{password}@{host}:{port}/{name}'.format(
         **{
             'user': os.getenv('DB_USER', 'root'),
@@ -25,6 +26,14 @@ class Config:
             'port': os.getenv('DB_PORT', '5432'),
             'name': os.getenv('DB_NAME', 'default_name'),
         })
+
+    if FLASK_ENV != 'test':
+        SQLALCHEMY_POOL_SIZE = int(os.getenv('SQLALCHEMY_POOL_SIZE', 10))
+        SQLALCHEMY_MAX_OVERFLOW = int(os.getenv('SQLALCHEMY_MAX_OVERFLOW', 20))
+    if FLASK_ENV == 'test':
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+        # SQLALCHEMY_ECHO = True
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     STORAGE_TYPE = os.getenv('STORAGE_TYPE', 'local')
     POLL_ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
