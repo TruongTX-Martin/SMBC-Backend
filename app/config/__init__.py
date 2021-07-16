@@ -12,11 +12,12 @@ load_dotenv(dotenv_path)
 class Config:
     FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     NAME = os.getenv('NAME', 'Flask Sample')
-    FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     SECRET_KEY = os.getenv('SECRET_KEY', '')
     DEBUG = False
     APP_HOST = os.getenv('APP_HOST', '127.0.0.1')
     APP_PORT = os.getenv('APP_PORT', '5000')
+    APP_URL = os.getenv('APP_URL', 'http://localhost')
+
     SQLALCHEMY_DATABASE_URI = 'mysql://{user}:{password}@{host}:{port}/{name}'.format(
         **{
             'user': os.getenv('DB_USER', 'root'),

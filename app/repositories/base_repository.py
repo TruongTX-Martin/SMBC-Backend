@@ -50,6 +50,22 @@ class BaseRepository(object):
     def exist(self, primary_id: Union[int, str]) -> bool:
         return bool(self.model_class.query.filter_by(id=primary_id).first())
 
+    def first_by_filter(self,
+                        filter_dict: Dict = None,
+                        offset: int = 0,
+                        limit: int = 10,
+                        order: str = "id",
+                        direction: str = "asc") -> Optional[db.Model]:
+        if filter_dict is None:
+            filter_dict = {}
+
+        query = self.build_order_query(self.model_class.query, order,
+                                       direction)
+
+        query = self.build_filter_query(query, filter_dict)
+
+        return query.offset(offset).limit(limit).first()
+
     def get_by_filter(self,
                       filter_dict: Dict = None,
                       offset: int = 0,

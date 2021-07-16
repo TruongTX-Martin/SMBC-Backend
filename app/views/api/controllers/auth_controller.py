@@ -1,10 +1,15 @@
-from flask import Blueprint, current_app, g, request
+from flask import Blueprint, current_app, g, render_template, request
 from injector import inject
+import jwt
 
-from app.services import UserService
-from app.views.api.schemas import LoginInputSchema
+from app.config import Config
+from app.exceptions import APIResponseError, NotFoundError, ParameterError
+from app.middlewares.request_log import request_log
+from app.services import EmailTokenService, MailService, UserService
 
-from ..responses import Error, Token
+from ..responses import Error, Status, Token
+from ..schemas import (CheckPasswordTokenSchema, ForgotPasswordSchema,
+                       ResetPasswordSchema, SigninSchema)
 
 app = Blueprint('api.auth', __name__)
 
@@ -13,7 +18,7 @@ app = Blueprint('api.auth', __name__)
 @inject
 def signin(user_service: UserService):
     request_data = request.get_json()
-    LoginInputSchema().load(request_data)
+    SigninSchema().load(request_data)
     input_data = {
         'email': request_data['email'],
         'password': request_data['password']
@@ -27,7 +32,7 @@ def signin(user_service: UserService):
 @inject
 def signup(user_service: UserService):
     request_data = request.get_json()
-    LoginInputSchema().load(request_data)
+    SigninSchema().load(request_data)
     input_data = {
         'email': request_data['email'],
         'password': request_data['password']

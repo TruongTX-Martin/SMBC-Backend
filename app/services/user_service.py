@@ -21,6 +21,9 @@ class UserService(object):
     def get_user(self, id_: int) -> Optional[User]:
         return self.user_repository.find(id_)
 
+    def get_user_by_email(self, email):
+        return self.user_repository.first_by_filter({'email': email})
+
     def create_user(self, fields: Dict) -> Optional[User]:
         user_fields = {
             'email': fields['email'],
