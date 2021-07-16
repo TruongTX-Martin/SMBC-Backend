@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from sqlalchemy import func
+from sqlalchemy.dialects import sqlite
 
 from ..database import db
 
@@ -16,7 +17,9 @@ class File(db.Model):
     class MEDIA:
         VIDEO = 'video'
 
-    id = db.Column('id', db.BigInteger, primary_key=True)
+    id = db.Column('id',
+                   db.BigInteger().with_variant(sqlite.INTEGER(), 'sqlite'),
+                   primary_key=True)
     original_file_name = db.Column('original_file_name',
                                    db.String(255),
                                    nullable=True)

@@ -4,6 +4,7 @@ from typing import Optional
 from flask_login import UserMixin
 import jwt
 from sqlalchemy import event, func
+from sqlalchemy.dialects import sqlite
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -16,7 +17,9 @@ from ..helpers import SessionHelper
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
-    id = db.Column('id', db.BigInteger, primary_key=True)
+    id = db.Column('id',
+                   db.BigInteger().with_variant(sqlite.INTEGER(), 'sqlite'),
+                   primary_key=True)
     email = db.Column('email', db.String(255), nullable=False)
     password = db.Column('password', db.String(255), nullable=False)
 
