@@ -10,6 +10,7 @@ load_dotenv(dotenv_path)
 
 
 class Config:
+    FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     NAME = os.getenv('NAME', 'Flask Sample')
     FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     SECRET_KEY = os.getenv('SECRET_KEY', '')
@@ -41,6 +42,11 @@ class Config:
 
     STORAGE_LOCAL_DIRECTORY = os.getenv('STORAGE_LOCAL_DIRECTORY',
                                         default_local_storage_path)
+
+    SLACK_ENABLED = bool(os.getenv('SLACK_ENABLED', False))
+    SLACK_WEBHOOK_USER = os.getenv('SLACK_WEBHOOK_USER', 'flask-bot')
+    SLACK_WEBHOOK_URL = os.getenv('SLACK_WEBHOOK_URL', '')
+    SLACK_CHANNEL_NAME = os.getenv('SLACK_CHANNEL_NAME', '')
 
     SESSION_TYPE = os.getenv('SESSION_TYPE')
     SESSION_FILE_DIR = os.getenv('SESSION_FILE_DIR')
