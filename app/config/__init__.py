@@ -26,6 +26,14 @@ class Config:
             'port': os.getenv('DB_PORT', '5432'),
             'name': os.getenv('DB_NAME', 'default_name'),
         })
+
+    if FLASK_ENV != 'test':
+        SQLALCHEMY_POOL_SIZE = int(os.getenv('SQLALCHEMY_POOL_SIZE', 10))
+        SQLALCHEMY_MAX_OVERFLOW = int(os.getenv('SQLALCHEMY_MAX_OVERFLOW', 20))
+    if FLASK_ENV == 'test':
+        SQLALCHEMY_DATABASE_URI = 'sqlite:///:memory:'
+        # SQLALCHEMY_ECHO = True
+
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     STORAGE_TYPE = os.getenv('STORAGE_TYPE', 'local')
     POLL_ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
