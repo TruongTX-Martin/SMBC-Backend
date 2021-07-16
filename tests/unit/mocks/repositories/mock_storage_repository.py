@@ -51,4 +51,3 @@ class MockStorageRepository(FileRepository):
 
     def exist(self, primary_id: Union[int, str]) -> bool:
         return True
-

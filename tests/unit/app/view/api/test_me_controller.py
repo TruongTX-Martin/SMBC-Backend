@@ -1,5 +1,4 @@
-
-from ....factories import (UserFactory)
+from ....factories import UserFactory
 from .base_test_base import ApiBaseTestBase as BaseTestBase
 
 

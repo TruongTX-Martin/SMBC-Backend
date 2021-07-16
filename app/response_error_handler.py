@@ -3,7 +3,7 @@ import traceback
 from flask import Flask, jsonify
 from werkzeug.exceptions import HTTPException
 
-from app.exceptions import (APIResponseError, LogicError, ParameterError)
+from app.exceptions import APIResponseError, LogicError, ParameterError
 from app.helpers import SlackHelper
 
 

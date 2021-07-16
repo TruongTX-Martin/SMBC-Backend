@@ -68,3 +68,78 @@ class BaseRepository(object):
         query = self.model_class.query
 
         return query.filter_by(**filter_dict).count()
+
+    def all_by_filter(self, filter_dict: Dict = None) -> List[db.Model]:
+        if filter_dict is None:
+            filter_dict = {}
+        query = self.model_class.query
+
+        query = self.build_filter_query(query, filter_dict)
+
+        return query.all()
+
+    def update_by_filter(self, filter_dict: Dict,
+                         fields: Dict) -> Optional[List[db.Model]]:
+        if not filter_dict:
+            return None
+
+        if not fields:
+            return None
+
+        fields_ = {}
+        columns = self.model_class.__table__.columns.keys()
+        for key in fields:
+            if key in columns:
+                fields_[key] = fields[key]
+
+        if not fields_:
+            return None
+
+        query = self.model_class.query
+
+        query = self.build_filter_query(query, filter_dict)
+
+        updated = query.update(fields_, synchronize_session='fetch')
+
+        if not self.db.session.info['in_transaction']:
+            self.db.session.commit()
+
+        return updated
+
+    def delete_by_filter(self, filter_dict: Dict) -> Optional[List[db.Model]]:
+        if not filter_dict:
+            return None
+
+        query = self.model_class.query
+
+        query = self.build_filter_query(query, filter_dict)
+
+        deleted = query.delete(synchronize_session='fetch')
+
+        if not self.db.session.info['in_transaction']:
+            self.db.session.commit()
+
+        return deleted
+
+    def build_filter_query(self, query, filter_dict: Dict = None):
+        if filter_dict is None:
+            filter_dict = {}
+
+        return query.filter_by(**filter_dict)
+
+    def build_order_query(self,
+                          query,
+                          order: str = "id",
+                          direction: str = "asc"):
+        columns = self.model_class.__table__.columns.keys()
+        # if order not in columns, override order as id
+        if order not in columns:
+            order = 'id'
+
+        # if direction not in [asc, desc], override direction
+        if direction not in ['asc', 'desc']:
+            direction = 'asc'
+
+        return query.order_by(
+            text(self.model_class.__tablename__ + "." + order + " " +
+                 direction))

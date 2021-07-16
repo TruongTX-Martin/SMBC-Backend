@@ -6,10 +6,10 @@ from flask_session import Session
 from ..config import Config
 from ..database import db, init_db
 from ..helpers import SessionHelper
-from ..repositories import FileRepository, UserRepository
+from ..repositories import EmailTokenRepository, FileRepository, UserRepository
 from ..response_error_handler import ResponseErrorHandler
-from ..services import StorageService, UserService
-from ..services.storage import S3, Local
+from ..services import EmailTokenService, StorageService, UserService
+from ..services.storages import S3, Local
 from ..views.api.routes import build_routes as api_build_routes
 from ..views.frontend.routes import build_routes as frontend_build_routes
 
@@ -35,6 +35,8 @@ def create_app(config_mode: str = 'development') -> Flask:
 
 
 def _bind(binder):
+    email_token_repository = EmailTokenRepository(database=db)
+
     user_repository = UserRepository(database=db)
 
     file_repository = FileRepository(database=db)
@@ -43,9 +45,10 @@ def _bind(binder):
 
     local = Local()
     s3 = S3()
-    storage_service = StorageService(file_repository=file_repository,
-                                     local_storage=local,
-                                     s3_storage=s3)
+    storage_service = StorageService(local_storage=local, s3_storage=s3)
+
+    email_token_service = EmailTokenService(
+        email_token_repository=email_token_repository)
 
     binder.bind(
         UserRepository,
@@ -54,14 +57,20 @@ def _bind(binder):
     )
 
     binder.bind(
-        UserService,
-        to=user_service,
+        FileRepository,
+        to=file_repository,
         scope=request,
     )
 
     binder.bind(
-        FileRepository,
-        to=file_repository,
+        EmailTokenService,
+        to=email_token_service,
+        scope=request,
+    )
+
+    binder.bind(
+        UserService,
+        to=user_service,
         scope=request,
     )
 

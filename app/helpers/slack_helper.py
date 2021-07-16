@@ -21,7 +21,8 @@ class SlackHelper(object):
         }
         try:
             body['attachments'] = [{
-                'text': f'[{Config.FLASK_ENV}] - {message}',
+                'text':
+                    f'[{Config.FLASK_ENV}] - {message}',
                 'fields': [{
                     'title': 'Time',
                     'value': datetime.now().strftime("%m/%d/%Y, %H:%M:%S"),
