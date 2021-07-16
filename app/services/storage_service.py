@@ -1,41 +1,31 @@
-import mimetypes
-import os
-import tempfile
-from typing import Dict
-
-from werkzeug.utils import secure_filename
+from pathlib import Path
+from typing import List
 
 from app.config import Config
-from app.helpers import FileHelper, StringHelper
-from app.repositories.file_repository import FileRepository
-from app.services.storage.local import Local as LocalStorage
-from app.services.storage.s3 import S3 as S3Storage
+from app.services.storages import S3, Local
 
 
 class StorageService(object):
-    def __init__(self, file_repository: FileRepository,
-                 local_storage: LocalStorage, s3_storage: S3Storage, *args,
-                 **kwargs):
+    def __init__(self, s3_storage: S3, local_storage: Local, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.file_repository = file_repository
-        self.storage_type = {'local': local_storage, 's3': s3_storage}
-        self.storage = None
+        self._s3_storage = s3_storage
+        self._local_storage = local_storage
+        self._storage = None
 
-    def upload(self, file, additional: Dict = None):
-        file_name = secure_filename(file.filename)
-        file_path = os.path.join(tempfile.gettempdir() + file_name)
-        file.save(os.path.join(file_path))
-        new_file_name = FileHelper.create_name()
-        file_key = new_file_name + "." + file_name.rsplit('.', 1)[1].lower()
-        self.storage = self.storage_type[Config.STORAGE_TYPE]
-        content_type = mimetypes.guess_type(
-            file_path)[0] or 'application/octet-stream'
-        file_url = self.storage.upload(file_path, file_key, content_type)
-        file_fields = {
-            'url': file_url,
-            'media_type': content_type,
-            'storage_type': Config.STORAGE_TYPE,
-            'original_file_name': file_name
-        }
-        os.remove(file_path)
-        return self.file_repository.create(file_fields)
+    def upload_file(self,
+                    path: Path,
+                    media_type: str,
+                    parent_dirs: List = None) -> str:
+        return self.storage().create_file(path, media_type, parent_dirs)
+
+    def get_temp_url(self, key: str) -> str:
+        return self.storage().get_url(key)
+
+    def storage(self):
+        if not self._storage:
+            if Config.STORAGE_TYPE == 's3':
+                self._storage = self._s3_storage
+            else:
+                self._storage = self._local_storage
+
+        return self._storage

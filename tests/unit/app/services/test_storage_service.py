@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import os
 from faker import Faker
 from werkzeug.datastructures import FileStorage
@@ -7,6 +8,12 @@ from app.services.storage import Local, S3, BaseStorage
 
 from ...mocks.repositories import MockStorageRepository
 import unittest
+=======
+import unittest
+
+from app.services import StorageService
+from app.services.storages import S3, Local
+>>>>>>> 92d3f91... improve model setting
 
 
 class TestStorageService(unittest.TestCase):
@@ -16,6 +23,7 @@ class TestStorageService(unittest.TestCase):
     def teardown_method(self, _method):
         pass
 
+<<<<<<< HEAD
     def test_upload(self):
         service = self._get_service()
 
@@ -29,3 +37,8 @@ class TestStorageService(unittest.TestCase):
     @staticmethod
     def _get_service():
         return StorageService(MockStorageRepository(None), Local(), S3())
+=======
+    @staticmethod
+    def _get_service():
+        return StorageService(local_storage=Local(), s3_storage=S3())
+>>>>>>> 92d3f91... improve model setting

@@ -1,4 +1,5 @@
-import datetime
+from datetime import datetime
+from sqlalchemy import func
 
 from ..database import db
 
@@ -12,12 +13,14 @@ class UserRole(db.Model):
 
     created_at = db.Column('created_at',
                            db.TIMESTAMP,
-                           default=datetime.datetime.utcnow,
+                           default=datetime.utcnow,
+                           server_default=func.current_timestamp(),
                            nullable=False)
     updated_at = db.Column('updated_at',
                            db.TIMESTAMP,
-                           onupdate=datetime.datetime.utcnow,
-                           default=datetime.datetime.utcnow,
+                           default=datetime.utcnow,
+                           onupdate=datetime.utcnow,
+                           server_default=func.current_timestamp(),
                            nullable=False)
 
     def __repr__(self):

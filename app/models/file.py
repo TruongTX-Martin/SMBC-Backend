@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy import func
 
 from ..database import db
 
@@ -21,14 +22,17 @@ class File(db.Model):
     url = db.Column('url', db.String(255), nullable=False)
     media_type = db.Column('media_type', db.String(255), nullable=True)
     storage_type = db.Column('storage_type', db.String(255), nullable=True)
+
     created_at = db.Column('created_at',
                            db.TIMESTAMP,
                            default=datetime.utcnow,
+                           server_default=func.current_timestamp(),
                            nullable=False)
     updated_at = db.Column('updated_at',
                            db.TIMESTAMP,
-                           onupdate=datetime.utcnow,
                            default=datetime.utcnow,
+                           onupdate=datetime.utcnow,
+                           server_default=func.current_timestamp(),
                            nullable=False)
 
     def __repr__(self):

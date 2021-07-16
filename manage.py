@@ -79,7 +79,7 @@ manager.add_command('database', MigrateCommand)
 
 @manager.command
 def run():
-    app.run(host=Config.APP_HOST, port=Config.APP_PORT)
+    app.run(host=Config.APP_HOST, port=Config.APP_PORT) #5000
 
 
 @manager.command

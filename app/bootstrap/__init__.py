@@ -43,9 +43,7 @@ def _bind(binder):
 
     local = Local()
     s3 = S3()
-    storage_service = StorageService(file_repository=file_repository,
-                                     local_storage=local,
-                                     s3_storage=s3)
+    storage_service = StorageService(local_storage=local, s3_storage=s3)
 
     binder.bind(
         UserRepository,

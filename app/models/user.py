@@ -3,7 +3,7 @@ from typing import Optional
 
 from flask_login import UserMixin
 import jwt
-from sqlalchemy import event
+from sqlalchemy import event, func
 from sqlalchemy.ext.hybrid import hybrid_property
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -19,14 +19,17 @@ class User(UserMixin, db.Model):
     id = db.Column('id', db.BigInteger, primary_key=True)
     email = db.Column('email', db.String(255), nullable=False)
     password = db.Column('password', db.String(255), nullable=False)
+
     created_at = db.Column('created_at',
                            db.TIMESTAMP,
                            default=datetime.utcnow,
+                           server_default=func.current_timestamp(),
                            nullable=False)
     updated_at = db.Column('updated_at',
                            db.TIMESTAMP,
                            default=datetime.utcnow,
                            onupdate=datetime.utcnow,
+                           server_default=func.current_timestamp(),
                            nullable=False)
 
     def __repr__(self):
