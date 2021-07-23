@@ -8,7 +8,5 @@ class Seeder:
         self.db = db
 
     def execute(self):
-        UserSeeder(db=self.db).execute()
-
-        # if os.getenv('FLASK_ENV') is 'development':
-        #     PollSeeder(db=self.db).execute()
+        if os.getenv('FLASK_ENV') == 'development':
+            UserSeeder(db=self.db).execute()
