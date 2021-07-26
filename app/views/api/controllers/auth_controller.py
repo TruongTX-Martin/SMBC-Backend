@@ -5,6 +5,7 @@ import jwt
 from app.config import Config
 from app.exceptions import APIResponseError, NotFoundError, ParameterError
 from app.middlewares.request_log import request_log
+from app.middlewares.request_validator import validate_request_body
 from app.services import EmailTokenService, MailService, UserService
 
 from ..responses import Error, Status, Token
@@ -15,10 +16,10 @@ app = Blueprint('api.auth', __name__)
 
 
 @app.route("/signin", methods=["POST"])
+@validate_request_body(SigninSchema)
 @inject
 def signin(user_service: UserService):
     request_data = request.get_json()
-    SigninSchema().load(request_data)
     input_data = {
         'email': request_data['email'],
         'password': request_data['password']
@@ -29,10 +30,11 @@ def signin(user_service: UserService):
 
 
 @app.route("/signup", methods=["POST"])
+@validate_request_body(SigninSchema)
 @inject
 def signup(user_service: UserService):
     request_data = request.get_json()
-    SigninSchema().load(request_data)
+
     input_data = {
         'email': request_data['email'],
         'password': request_data['password']
@@ -43,13 +45,13 @@ def signup(user_service: UserService):
 
 
 @app.route('/forgot-password', methods=["POST"])
+@validate_request_body(ForgotPasswordSchema)
 @request_log
 @inject
 def forgot_password(user_service: UserService, mail_service: MailService,
                     email_token_service: EmailTokenService):
 
     request_data = request.get_json()
-    ForgotPasswordSchema().load(request_data)
 
     email = request_data.get('email')
     user = user_service.get_user_by_email(email)
@@ -67,12 +69,12 @@ def forgot_password(user_service: UserService, mail_service: MailService,
 
 
 @app.route('/reset-password', methods=["POST"])
+@validate_request_body(ResetPasswordSchema)
 @request_log
 @inject
 def reset_password(user_service: UserService,
                    email_token_service: EmailTokenService):
     request_data = request.get_json()
-    ResetPasswordSchema().load(request_data)
 
     token = request_data.get('token')
     email_token_service.validate(token)
@@ -96,10 +98,10 @@ def reset_password(user_service: UserService,
 
 
 @app.route('/verify-token', methods=["POST"])
+@validate_request_body(CheckPasswordTokenSchema)
 @inject
 def verify_password_token(email_token_service: EmailTokenService):
     request_data = request.get_json()
-    CheckPasswordTokenSchema().load(request_data)
 
     token = request_data.get('token')
     email_token = email_token_service.get_email_token_by_token(token)
