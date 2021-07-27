@@ -1,3 +1,4 @@
+import datetime
 from typing import Any, Dict, List, Optional, Union
 
 from flask_sqlalchemy import SQLAlchemy
@@ -29,19 +30,27 @@ class BaseRepository(object):
     def create(self, fields: Dict) -> db.Model:
         model = self.model_class(**fields)
         self.db.session.add(model)
-        self.db.session.commit()
+        if not self.db.session.info['in_transaction']:
+            self.db.session.commit()
         return model
 
     def update(self, model: db.Model, fields: Dict) -> db.Model:
         for key in fields:
             setattr(model, key, fields[key])
         self.db.session.add(model)
-        self.db.session.commit()
+        if not self.db.session.info['in_transaction']:
+            self.db.session.commit()
         return model
 
     def delete(self, model: db.Model) -> bool:
-        self.db.session.delete(model)
-        self.db.session.commit()
+        if getattr(model, '__soft_delete__', False):
+            model.deleted_at = datetime.datetime.utcnow()
+            self.db.session.add(model)
+        else:
+            self.db.session.delete(model)
+
+        if not self.db.session.info['in_transaction']:
+            self.db.session.commit()
         return True
 
     def find(self, primary_id: Any) -> db.Model:
@@ -74,16 +83,22 @@ class BaseRepository(object):
                       direction: str = "asc") -> List[db.Model]:
         if filter_dict is None:
             filter_dict = {}
-        query = self.model_class.query.order_by(text(order + " " + direction))
 
-        return query.filter_by(**filter_dict).offset(offset).limit(limit).all()
+        query = self.build_order_query(self.model_class.query, order,
+                                       direction)
+
+        query = self.build_filter_query(query, filter_dict)
+
+        return query.offset(offset).limit(limit).all()
 
     def count_by_filter(self, filter_dict: Dict = None) -> int:
         if filter_dict is None:
             filter_dict = {}
         query = self.model_class.query
 
-        return query.filter_by(**filter_dict).count()
+        query = self.build_filter_query(query, filter_dict)
+
+        return query.count()
 
     def all_by_filter(self, filter_dict: Dict = None) -> List[db.Model]:
         if filter_dict is None:

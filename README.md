@@ -73,22 +73,58 @@ Please execute isort and yapf before committing
 
 ```bash
 
-poetry run isort -rc -y .
+poetry run isort -rc -y app tests
 
-poetry run yapf -ir -vv .
+poetry run yapf -ir -vv app tests
 ```
 
+For Docker compose environment
+
+```bash
+
+docker-compose exec app poetry run isort -rc -y app tests
+
+docker-compose exec app poetry run yapf -ir -vv  app tests
+
+```
 
 ### 5. Run unittest
 
+Command:
+poetry run python manage.py test
+
+Option `-p` for path of test file, directory
+
+#### Local machine
+
+```bash
+poetry run python manage.py test -p tests
+
+```
+
+#### Docker compose environment
 Start test Docker environment
 
-```.env
+```bash
 make test
 
 ```
 
-Run test case
+Run test case in Docker compose environment
 ```.env
-dkc exec app poetry run python manage.py test -p tests
+docker-compose exec app poetry run python manage.py test -p tests
+
+# or
+make run-test
 ```
+
+Other documents
+- [API design (Swagger)](./documents/api.yaml)
+- [Database ERD design](./documents/db/schema.plantuml)
+- [Authentication Flow](./documents/authentication.md)
+- [How to create a middleware](./documents/how-to-create-middleware.md)
+- [How to migrate database](./documents/how-to-migrate-database.md)
+- [How to validate a request](./documents/how-to-validate-request-params.md)
+- [How to write an unittest](./documents/unittest.md)
+- [How to create a soft delete model](./documents/how-to-create-soft-delete-model.md)
+- [How to use sql transaction](./documents/how-to-use-a-sql-transaction.md)
