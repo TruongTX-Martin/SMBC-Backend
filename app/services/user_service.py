@@ -4,7 +4,7 @@ from typing import Dict, List, Optional
 from flask import g, session
 import ulid
 
-from app.exceptions import APIResponseError, LogicError
+from app.exceptions import APIResponseError, AuthenticationError
 
 from ..models import User
 from ..repositories import UserRepository
@@ -65,4 +65,7 @@ class UserService(object):
         if user_id is None:
             g.user = None
         else:
-            g.user = self.user_repository.find(user_id)
+            user = self.user_repository.find(user_id)
+            if user is None:
+                raise AuthenticationError('Unauthorized - Token is not valid')
+            g.user = user

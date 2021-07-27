@@ -16,7 +16,8 @@ def request_log(f):
             current_app.logger.info(
                 f"%s %s path=%s response_status=%s user_agent=%s user_id=%s duration=%s",
                 request.remote_addr, request.method, request.path, 'success',
-                request.user_agent, g.user.id if 'user' in g else 'anonymous',
+                request.user_agent, g.user.id if
+                ('user' in g and g.user is not None) else 'anonymous',
                 duration)
 
             return response
@@ -25,7 +26,8 @@ def request_log(f):
             current_app.logger.info(
                 f"%s %s path=%s response_status=%s user_agent=%s user_id=%s duration=%s",
                 request.remote_addr, request.method, request.path, 'error',
-                request.user_agent, g.user.id if 'user' in g else 'anonymous',
+                request.user_agent, g.user.id if
+                ('user' in g and g.user is not None) else 'anonymous',
                 duration)
 
             raise e
