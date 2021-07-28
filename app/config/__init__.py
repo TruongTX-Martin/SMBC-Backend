@@ -66,3 +66,7 @@ class Config:
     SLACK_WEBHOOK_USER = os.getenv('SLACK_WEBHOOK_USER', 'flask-bot')
     SLACK_WEBHOOK_URL = os.getenv('SLACK_WEBHOOK_URL', '')
     SLACK_CHANNEL_NAME = os.getenv('SLACK_CHANNEL_NAME', '')
+
+    CACHE_TYPE = os.getenv('CACHE_TYPE', 'filesystem')
+    CACHE_DIR = os.getenv('CACHE_DIR', 'local_caches')
+    CACHE_TIMEOUT_SECONDS = int(os.getenv('CACHE_TIMEOUT_SECONDS', 120))
