@@ -82,9 +82,9 @@ For Docker compose environment
 
 ```bash
 
-docker-compose exec app poetry run isort -rc -y app tests
+docker-compose exec app poetry run isort -rc -y app tests migrations seeds
 
-docker-compose exec app poetry run yapf -ir -vv  app tests
+docker-compose exec app poetry run yapf -ir -vv  app tests migrations seeds
 
 ```
 
