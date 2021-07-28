@@ -88,6 +88,20 @@ docker-compose exec app poetry run yapf -ir -vv  app tests
 
 ```
 
+Add pre_commit to .git hooks for auto format code.
+
+
+```bash
+cp  .git-hooks/pre-commit .git/hooks
+
+
+chmod +x .git/hooks/pre-commit
+
+```
+
+* Note, this git hook uses poetry mode by default. For `pip`, `pipenv` environment please remove comment out from .git/hooks/pre-commit
+
+
 ### 5. Run unittest
 
 Command:
