@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_injector import FlaskInjector, request
 from flask_session import Session
 
+from ..cache import init_cache
 from ..config import Config
 from ..database import db, init_db
 from ..helpers import SessionHelper
@@ -20,6 +21,8 @@ def create_app(config_mode: str = 'development') -> Flask:
     app.secret_key = Config.SECRET_KEY
     Session(app)
     login_manager = SessionHelper.get_login_manager()
+
+    init_cache(app)
 
     CORS(app, supports_credentials=True)
     init_db(app)

@@ -29,6 +29,7 @@ __pycache__/
 .DS_Store
 
 local_sessions/
+local_caches/
 
 app/static/*
 !app/static/.gitignore
