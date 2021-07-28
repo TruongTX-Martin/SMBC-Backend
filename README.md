@@ -142,3 +142,4 @@ Other documents
 - [How to write an unittest](./documents/unittest.md)
 - [How to create a soft delete model](./documents/how-to-create-soft-delete-model.md)
 - [How to use sql transaction](./documents/how-to-use-a-sql-transaction.md)
+- [How to use cache](./documents/how-to-use-a-cache.md)
