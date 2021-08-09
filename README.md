@@ -73,9 +73,9 @@ Please execute isort and yapf before committing
 
 ```bash
 
-poetry run isort -rc -y app tests
+poetry run isort -rc -y app tests migrations seeds
 
-poetry run yapf -ir -vv app tests
+poetry run yapf -ir -vv app tests migrations seeds
 ```
 
 For Docker compose environment
@@ -105,14 +105,16 @@ chmod +x .git/hooks/pre-commit
 ### 5. Run unittest
 
 Command:
-poetry run python manage.py test
+poetry run pytest
 
-Option `-p` for path of test file, directory
+for path of test file, directory
 
 #### Local machine
 
 ```bash
-poetry run python manage.py test -p tests
+poetry run pytest tests
+poetry run pytest tests/unit/app/view/api/test_auth_controller.py 
+
 
 ```
 
@@ -126,7 +128,8 @@ make test
 
 Run test case in Docker compose environment
 ```.env
-docker-compose exec app poetry run python manage.py test -p tests
+docker-compose exec app poetry run pytest tests
+docker-compose exec app poetry run pytest tests/unit/app/view/api/test_auth_controller.py 
 
 # or
 make run-test
