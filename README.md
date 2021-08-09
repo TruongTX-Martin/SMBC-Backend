@@ -73,9 +73,9 @@ Please execute isort and yapf before committing
 
 ```bash
 
-poetry run isort -rc -y app tests
+poetry run isort -rc -y app tests migrations seeds
 
-poetry run yapf -ir -vv app tests
+poetry run yapf -ir -vv app tests migrations seeds
 ```
 
 For Docker compose environment
