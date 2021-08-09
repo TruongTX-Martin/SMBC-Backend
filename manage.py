@@ -1,13 +1,11 @@
 import codecs
 import logging
 import sys
-import urllib.parse
 
 from flask import jsonify, url_for
 from flask._compat import text_type
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
-import pytest
 import sadisplay
 
 from app import models
@@ -80,12 +78,6 @@ manager.add_command('database', MigrateCommand)
 @manager.command
 def run():
     app.run(host=Config.APP_HOST, port=Config.APP_PORT)  #5000
-
-
-@manager.command
-def test():
-    """Runs the tests."""
-    pytest.main(["-s", "tests"])
 
 
 @manager.command
