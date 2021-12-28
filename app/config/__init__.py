@@ -18,7 +18,7 @@ class Config:
     APP_PORT = os.getenv('APP_PORT', '5000')
     APP_URL = os.getenv('APP_URL', 'http://localhost')
 
-    SQLALCHEMY_DATABASE_URI = 'mysql://{user}:{password}@{host}:{port}/{name}'.format(
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://{user}:{password}@{host}:{port}/{name}'.format(
         **{
             'user': os.getenv('DB_USER', 'root'),
             'password': os.getenv('DB_PASSWORD', ''),

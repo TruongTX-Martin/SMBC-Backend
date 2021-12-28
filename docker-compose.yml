@@ -1,15 +1,16 @@
 version: '3'
 services:
   db:
-    image: mysql:5.7
+    image: postgres
     restart: always
-    ports:
-      - "3306:3306" # localhost:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: password
     volumes:
-      - mysql-data:/var/lib/mysql
-      - ./docker/db:/docker-entrypoint-initdb.d/:ro
+      - db-data:/var/lib/postgresql/data/
+      - ./docker/init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+    ports:
+      - 5432:5432
   app:
     build:
       context: .
@@ -42,4 +43,4 @@ services:
       - 80:80
 
 volumes:
-  mysql-data:
+  db-data:
